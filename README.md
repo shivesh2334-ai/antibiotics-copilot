@@ -27,7 +27,7 @@
 
 | Layer | Technology |
 |-------|-----------|
-| Framework | [Next.js 15](https://nextjs.org) (App Router) |
+| Framework | [Next.js 16](https://nextjs.org) (App Router) |
 | Language | TypeScript |
 | Styling | Tailwind CSS v4 |
 | AI SDK | [Vercel AI SDK](https://sdk.vercel.ai) |

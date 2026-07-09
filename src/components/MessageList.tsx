@@ -2,6 +2,8 @@
 
 import { UIMessage } from "ai";
 import { useEffect, useRef } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface Props {
   messages: UIMessage[];
@@ -35,32 +37,13 @@ function AssistantBubble({ message }: { message: UIMessage }) {
           💊
         </div>
         <div className="rounded-2xl rounded-tl-sm bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 px-4 py-3 shadow-sm">
-          <div
-            className="text-sm leading-relaxed text-slate-800 dark:text-slate-200 prose prose-sm dark:prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: formatMessage(text) }}
-          />
+          <div className="text-sm leading-relaxed text-slate-800 dark:text-slate-200 [&_h1]:text-lg [&_h1]:font-bold [&_h1]:mt-3 [&_h2]:text-base [&_h2]:font-bold [&_h2]:mt-3 [&_h3]:font-semibold [&_h3]:mt-2 [&_ul]:list-disc [&_ul]:ml-4 [&_ol]:list-decimal [&_ol]:ml-4 [&_li]:mt-0.5 [&_p]:mt-2 [&_p:first-child]:mt-0 [&_strong]:font-semibold">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
+          </div>
         </div>
       </div>
     </div>
   );
-}
-
-/** Minimal markdown-like formatter: bold, bullets, headers */
-function formatMessage(text: string): string {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/^### (.+)$/gm, '<h3 class="font-semibold mt-3 mb-1">$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2 class="font-bold mt-4 mb-2 text-base">$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1 class="font-bold mt-4 mb-2 text-lg">$1</h1>')
-    .replace(/^[•\-] (.+)$/gm, '<li class="ml-4 list-disc">$1</li>')
-    .replace(/(<li[\s\S]*?<\/li>)/g, '<ul class="my-1">$1</ul>')
-    .replace(/\n\n/g, '</p><p class="mt-2">')
-    .replace(/\n/g, "<br/>")
-    .replace(/^/, '<p class="mt-0">')
-    .replace(/$/, "</p>");
 }
 
 function TypingIndicator() {
@@ -103,4 +86,5 @@ export default function MessageList({ messages, isLoading }: Props) {
     </div>
   );
 }
+
 
