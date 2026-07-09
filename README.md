@@ -2,6 +2,8 @@
 
 > AI-powered clinical decision support for antibiotic therapy, dosing, resistance patterns, and antimicrobial stewardship.
 
+This app is configured as a **RAG system focused on `JIPMER_Antibiotic_Policy_2026.txt`**.
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fshivesh2334-ai%2Fantibiotics-copilot&env=GROQ_API_KEY,GOOGLE_GENERATIVE_AI_API_KEY&envDescription=API%20keys%20for%20LLM%20providers%20(at%20least%20one%20required)&envLink=https%3A%2F%2Fgithub.com%2Fshivesh2334-ai%2Fantibiotics-copilot%23environment-variables)
 
 ---
@@ -9,16 +11,14 @@
 ## Features
 
 - 🤖 **AI Chatbot** — Streaming chat interface powered by multiple free-tier LLMs
+- 📚 **Policy-grounded RAG** — Retrieves relevant excerpts from `JIPMER_Antibiotic_Policy_2026.txt` for every query
 - 🔄 **LLM Selector** — Switch between providers in the UI without page reload:
   - **Groq** (free): Llama 3.3 70B · Llama 3.1 8B · Mixtral 8x7B
   - **Google Gemini** (free): Gemini 2.0 Flash · Gemini 1.5 Flash
 - 💊 **Clinical Decision Support**
-  - Empiric antibiotic therapy recommendations
-  - Dosing guidance (renal/hepatic adjustment)
-  - Drug–drug and drug–allergy interactions
-  - IV-to-oral switch criteria
-  - Antibiotic stewardship & resistance patterns (MRSA, ESBL, CPE)
-  - Surgical & post-exposure prophylaxis
+  - JIPMER-policy based empiric antibiotic therapy recommendations
+  - Dosing guidance and stewardship principles from the policy text
+  - Sepsis, bacteremia, CRBSI, and resistance-focused policy lookups
 - ⚡ **Vercel-ready** — One-click deployment with `vercel.json` included
 
 ---
@@ -102,7 +102,7 @@ At least one variable must be set. The app will return a helpful error message i
 ```
 src/
 ├── app/
-│   ├── api/chat/route.ts   # Streaming chat API (Groq / Gemini)
+│   ├── api/chat/route.ts   # Streaming chat API + retrieval augmentation
 │   ├── layout.tsx           # Root layout & metadata
 │   └── page.tsx             # Main page
 ├── components/
@@ -112,7 +112,10 @@ src/
 │   └── ModelSelector.tsx    # LLM provider/model dropdown
 └── lib/
     ├── models.ts            # Model registry (Groq + Gemini)
+  ├── rag.ts               # Loads/chunks policy + relevance retrieval
     └── systemPrompt.ts      # Clinical decision support system prompt
+
+JIPMER_Antibiotic_Policy_2026.txt   # Primary RAG knowledge source
 ```
 
 ---
