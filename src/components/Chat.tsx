@@ -9,11 +9,11 @@ import ChatInput from "@/components/ChatInput";
 import { DEFAULT_MODEL, ModelOption } from "@/lib/models";
 
 const STARTERS = [
-  "What is the first-line antibiotic for uncomplicated UTI in an adult?",
-  "Patient has CAP, penicillin allergy — what are my options?",
-  "How should I dose vancomycin in a patient with CrCl 20 mL/min?",
-  "Explain MRSA decolonisation protocol",
-  "When should I switch from IV to oral antibiotics for pneumonia?",
+  "As per JIPMER policy, what are the 5 Rs of antibiotic therapy?",
+  "What does JIPMER policy recommend for sepsis empirical therapy?",
+  "In JIPMER policy, when should blood cultures be taken?",
+  "Summarize JIPMER guidance on ESBL and BL/BLI versus carbapenems.",
+  "What are the de-escalation principles in the policy?",
 ];
 
 export default function Chat() {
@@ -51,7 +51,7 @@ export default function Chat() {
               Antibiotics Copilot
             </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Clinical decision support · antibiotic stewardship
+              JIPMER Policy 2026 RAG assistant
             </p>
           </div>
         </div>
@@ -77,9 +77,9 @@ export default function Chat() {
               Welcome to Antibiotics Copilot
             </h2>
             <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-              AI-powered clinical decision support for empiric therapy, dosing,
-              resistance patterns, and antibiotic stewardship. Choose an LLM
-              provider above and ask your first question.
+              Retrieval-augmented assistant grounded in JIPMER Antibiotic
+              Policy 2026. Ask policy-specific questions on empiric therapy,
+              dosing, resistance patterns, and stewardship.
             </p>
           </div>
 
@@ -96,8 +96,8 @@ export default function Chat() {
           </div>
 
           <p className="text-[11px] text-slate-400 text-center max-w-xs">
-            ⚠️ For clinical support only. Always verify with local antibiogram
-            data and consult an infectious diseases specialist for complex cases.
+            ⚠️ Responses are grounded in JIPMER policy excerpts. Always verify
+            with local antibiogram data and specialist input for complex cases.
           </p>
         </div>
       ) : (
