@@ -3,6 +3,17 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { convertToModelMessages, streamText, UIMessage } from "ai";
 import { MODELS, Provider } from "@/lib/models";
 import { SYSTEM_PROMPT } from "@/lib/systemPrompt";
+import Fuse from "fuse.js";
+import chunks from "@/lib/chunks.json";
+
+const fuse = new Fuse(chunks, {
+  keys: ["text"],
+  threshold: 0.4,
+  ignoreLocation: true,
+  includeScore: true,
+});
+
+const MAX_CONTEXT_CHUNKS = 5;
 
 export const maxDuration = 30;
 
@@ -48,9 +59,31 @@ export async function POST(req: Request) {
     });
   }
 
+  if (!messages || messages.length === 0) {
+    return new Response(JSON.stringify({ error: "No messages provided." }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  const lastMessageParts = messages[messages.length - 1].parts || [];
+  const lastMessageText = lastMessageParts
+    .filter((p): p is { type: "text"; text: string } => p.type === "text")
+    .map((p) => p.text)
+    .join(" ");
+  let augmentedPrompt = SYSTEM_PROMPT;
+
+  if (lastMessageText) {
+    const searchResults = fuse.search(lastMessageText, { limit: MAX_CONTEXT_CHUNKS });
+    if (searchResults.length > 0) {
+      const contextText = searchResults.map((r) => r.item.text).join("\n\n---\n\n");
+      augmentedPrompt += `\n\nUse the following context from the JIPMER Antibiotic Policy 2026 to help answer the question:\n\n${contextText}`;
+    }
+  }
+
   const result = streamText({
     model: llm,
-    system: SYSTEM_PROMPT,
+    system: augmentedPrompt,
     messages: await convertToModelMessages(messages),
   });
 
