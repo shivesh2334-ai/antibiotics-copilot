@@ -56,6 +56,7 @@ export default function Chat() {
           </div>
         </div>
         <div className="flex items-center gap-3 flex-wrap">
+          <a href="/policy.html" className="rounded-lg border border-emerald-300 px-3 py-2 text-xs font-semibold text-emerald-700 hover:bg-emerald-50">Explore policy ↗</a>
           <ModelSelector selected={selectedModel} onChange={setSelectedModel} />
           {messages.length > 0 && (
             <button

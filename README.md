@@ -123,3 +123,7 @@ JIPMER_Antibiotic_Policy_2026.txt   # Primary RAG knowledge source
 ## Disclaimer
 
 > ⚠️ **For clinical support only.** This tool provides AI-generated suggestions to assist healthcare professionals. It does **not** replace clinical judgement, a formal patient assessment, or consultation with an infectious diseases specialist. Always verify recommendations against your local antibiogram and institutional guidelines.
+
+## Policy explorer
+
+Open `/policy.html` to browse conditions and search the local JIPMER 2026 vector index, including drug dosing, treatment duration and documented adverse effects. Every excerpt names its policy and PDF page. This works without an LLM API key; the existing chat remains available. The index is precomputed in `public/policy-index.json` using sparse TF-IDF vectors. Extracted table text may lose column alignment: verify prescriptions against the original PDF. The policy is marked for JIPMER internal circulation; obtain permission before making a public deployment of its extracted text.
